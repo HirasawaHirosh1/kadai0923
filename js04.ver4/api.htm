@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <title>Google Books API から書籍情報を表示するサンプルコード</title>
+  <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    tr,td{
+      border:1px solid #555;
+    }
+  </style>
+</head>
+<body>
+
+  <table id="book_list"></table>
+
+
+<script>
+//型チェック: typeChk(確認したい値, 型);
+function typeChk(value,type){
+  if(typeof value == type) {
+    return true;
+  }else{
+    return false;
+  }
+};
+
+//通信処理(送信したい変数)
+const data = {
+    q:"jquery"
+};
+//通信処理    
+axios.get('https://www.googleapis.com/books/v1/volumes',{
+        params:data
+})
+.then(function (res) {
+    //データを受信
+    const val = res.data;
+    //console.log(val); //確認：v.items[0].volumeInfo.title
+
+    //レコードの数だけ繰り返す
+    let html="";
+    for(let i=0; i<val.items.length; i++){
+          const elm = val.items[i].volumeInfo;
+             console.log(elm.authors);
+             console.log(elm.description);
+            html += '<tr>'; 
+            html += '<td>書籍名：' + elm.title + '</td>';
+            if( typeof(elm.authors) != "undefined"){
+              html += '<td>著者：' + elm.authors[0] + '</td>';
+            }
+            if( typeof(elm.description) != "undefined"){
+              html += '<td>解説：' + elm.description + '</td>';
+            }
+            html += '</tr>';
+    };
+    
+    //表示したい場所のid名にデータを追加する
+    $("#book_list").append(html);
+
+});
+
+
+</script>
+</body>
+</html>
