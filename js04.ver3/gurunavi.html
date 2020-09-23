@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>ぐるなびAPI</title>
+</head>
+<body>
+<div>
+    アクセスキーを入力<input id="key" value="a784cf0fe4b575b5bedc9680dcb8e300" type="text" size="45">
+    <input type="button" id="btn" value="送信"><br>
+    緯度lat: <input type="text" id="lat" value="35.667215">
+    経度lon: <input type="text" id="lon" value="139.713861">
+</div>
+<table id="table">
+    <tr>
+        <th>店舗名</th>
+        <th>最寄り駅</th>
+        <th>徒歩時間</th>
+     </tr>
+</table>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+
+
+//*****************************************************
+// Click Event
+// ぐるなびAPIへデータRequest → APIサーバーからresponseデータ取得 
+//*****************************************************
+$("#btn").on("click", function() {
+    //送信データをObject変数で用意
+    //参考URL:https://api.gnavi.co.jp/api/manual/restsearch/
+    const data = {
+        keyid:$("#key").val(),
+        latitude:$("#lat").val(),
+        longitude:$("#lon").val(),
+        range:3,
+        lunch:1,
+        wifi:1,
+        with_pet:1
+    };
+    //Ajax（非同期通信）
+    axios.get('https://api.gnavi.co.jp/RestSearchAPI/v3/', {
+        params:data
+    })
+    .then(function (response) {
+        //データ受信成功！！showData関数にデータを渡す
+        showData(response.data);
+    }).catch(function (error) {
+        console.log(error);//通信Error
+    }).then(function () {
+        //console.log("Last");//通信OK/Error後に処理を必ずさせたい場合
+    });
+});
+
+//*****************************************************
+//ぐるなびデータ表示処理
+//*****************************************************
+function showData(data){
+    //データ確認用
+    console.log(data.rest);
+
+    //データを繰り返し処理で取得
+    const len  = data.rest.length; //データ数を取得
+    for( let i=0; i<len; i++){
+        $("#table").append('<td><td>' + data.rest[i].name + '</td></td>' + data.rest[i].access.station + '<tr><td/>'+ data.rest[i].access.integer+'<td></td>');
+    };
+}
+[1].access.station [1].access.station_exirequ
+</script>
+</body>
+</html>
