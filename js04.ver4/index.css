@@ -4,6 +4,9 @@ body {
   margin-left:10px;
   margin-right:10px;
 }
+element.style {
+    text-align: center;
+}
 .container {
   max-width:600px;
   margin:0 auto;
