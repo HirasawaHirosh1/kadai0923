@@ -69,7 +69,7 @@ input, textarea {
 }
     button {
         margin-top: 15px;
-        margin: 30px 160px;
+        margin: 30px auto;
         margin-bottom: 25px;
         background-color: #2ABCA7;
         padding: 12px 45px;
@@ -83,6 +83,7 @@ input, textarea {
         cursor: pointer;
         width: 30%;
         color: #fff;
+      
     }
 button:hover, .button:hover {
   background:#19a08c;
