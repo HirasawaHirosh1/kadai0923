@@ -1,4 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <link rel="stylesheet" href="index.css">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <script type="text/javascript">var submitted=false;</script>
+<iframe name="hidden_iframe" id="hidden_iframe" 
+style="display:none;" onload="if(submitted) 
+{window.location='https://www.google.com'}"></iframe>
+</head>
+<body>
+
+</body>
+</html>
 <html>
+
   <head></head>
   <body>
     <!--
@@ -36,22 +54,21 @@
       request.then(function(response) {
         // TODO: Change code below to process the `response` object:
         console.log(response.result);
+        fillTable(response.result.values);
+        console.log('\n\n\n-----------');
+        console.log(response.result.values);
+        var myJSON = JSON.stringify(response.result.values);
+        console.log(myJSON);
       }, function(reason) {
         console.error('error: ' + reason.result.error.message);
       });
     }
 
     function initClient() {
-      var API_KEY = 'AIzaSyCZIpdUblYESIEmROwC2EMdnrwtRi6fQSY';  // TODO: Update placeholder with desired API key.
+      var API_KEY = 'AIzaSyCZIpdUblYESIEmROwC2EMdnrwtRi6fQSY';  
 
-      var CLIENT_ID = '959118115283-34km09skvuaov3bpc46r68kg77ejv489.apps.googleusercontent.com';  // TODO: Update placeholder with desired client ID.
+      var CLIENT_ID = '959118115283-34km09skvuaov3bpc46r68kg77ejv489.apps.googleusercontent.com';  
 
-      // TODO: Authorize using one of the following scopes:
-      //   'https://www.googleapis.com/auth/drive'
-      //   'https://www.googleapis.com/auth/drive.file'
-      //   'https://www.googleapis.com/auth/drive.readonly'
-      //   'https://www.googleapis.com/auth/spreadsheets'
-      //   'https://www.googleapis.com/auth/spreadsheets.readonly'
       var SCOPE = 'https://www.googleapis.com/auth/spreadsheets.readonly';
 
       gapi.client.init({
@@ -82,12 +99,105 @@
     function handleSignOutClick(event) {
       gapi.auth2.getAuthInstance().signOut();
     }
+    function fillTable(data) {
+            for (var i = 0; i < data.length; i++) //the lines
+            {
+    var row = "<tr>";
+                for (var j = 0; j < data[i].length; j++) { //the colums
+                    if (i > 0) //if is a common line
+                        row += "<td> " + data[i][j] + " </td>"; 
+                    else // or if is the header of the table
+                        row += "<td> " + data[i][j] + " </td>";
+                }
+    row += "</tr>"
+                $("#table").append(row);
+            }
+        }
+
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script async defer src="https://apis.google.com/js/api.js"
       onload="this.onload=function(){};handleClientLoad()"
       onreadystatechange="if (this.readyState === 'complete') this.onload()">
+
+
+// フォーム用スクリプト
+$(function() {
+    $("#contact").validate({
+        rules: {
+            name: "required",
+            email: {
+                required: true,
+                email: true
+            },
+            message: "required",
+        },
+        messages: {
+            name: "Please enter your name",
+            email: "Please enter a valid email address",
+            message: "Please enter a message",
+        },
+        submitHandler: function(form) {
+           $(".message").show();
+           $(".message").fadeOut(4500);
+        }
+    });
+  });
+      
     </script>
     <button id="signin-button" onclick="handleSignInClick()">Sign in</button>
     <button id="signout-button" onclick="handleSignOutClick()">Sign out</button>
+
+   <!-- <table id="table">
+      <tr>
+          <th>予想金額</th>
+          <th>差異</th>
+          <th>判定</th>
+          <th>利用可能路線</th>
+          <th>階数</th>
+          <th>平米</th>
+          <th>築年数</th>
+          <th>乗降者数</th>
+          <th>最寄り</th>
+       </tr>
+  </table>-->
+
+  <table id="table">
+  <tr>
+    <th>物件の適正価格</th>
+  </tr>
+</table>
+
+
+  <!--フォームの作成とグーグルフォームへの連携-->
+<form action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSclSBLECUNph3d5FRUH2QjIfQV8MqX0YUhE9k7UdEbmj5bUpw/formResponse"  method="POST" id="ss-form" 
+target="hidden_iframe" onsubmit="submitted=true">
+  <div class="container">
+    <div class="head">
+      <h2>不動産価値判定アプリ（東京都のみ対応）</h2>
+    </div>
+    <input type="text" name="entry.1142104618" placeholder="お名前" /><br />
+    <input type="text" name="entry.140295153" placeholder="物件名" /><br />
+    <input  type="email" name="entry.1823326056" placeholder="Email" /><br />
+    <input  type="number" name="entry.581337477" placeholder="金額" /><br />
+    <input  type="number" name="entry.1426769739" placeholder="駅徒歩（分）" /><br />
+    <input  type="number" name="entry.457275208" placeholder="階数" /><br />
+    <input  type="number" name="entry.1480963937" placeholder="平米" /><br />
+    <input  type="number" name="entry.499184654" placeholder="築年数" /><br />
+    <input  type="text" name="entry.1582429503" placeholder="最寄り駅" /><br />
+
+    <div class="message">Message Sent</div>
+    <button id="submit" type="submit">
+      判定！
+    </button>
+  </div>
+</form>
+  <!--サンクスページ設定、及び判定結果ページ-->
+ 
+
+
   </body>
+
+
 </html>
