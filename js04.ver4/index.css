@@ -1,8 +1,9 @@
 body {
-  padding-top:25px;
-  background-color:#FAFAFA;
-  margin-left:10px;
-  margin-right:10px;
+    padding-top: 25px;
+    background-color: #FAFAFA;
+    margin-left: 10px;
+    margin-right: 10px;
+    text-align: center;
 }
 element.style {
     text-align: center;
